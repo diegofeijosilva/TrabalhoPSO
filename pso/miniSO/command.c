@@ -1,6 +1,6 @@
 /*
  * Universidade Luterana do Brasil
- * Curso de Bacharelado em Ciência da Computação
+ * Curso de Bacharelado em Ciï¿½ncia da Computaï¿½ï¿½o
  * Disciplina: Projeto de Sistemas Operacionais
  * Professor: Roland Teodorowitsch
  *
@@ -10,30 +10,30 @@
  */
 
 
-/* --- INCLUSÃO DE ARQUIVOS ------------------------------*/
+/* --- INCLUSï¿½O DE ARQUIVOS ------------------------------*/
 
 #include "miniSO.h"
 #include "command.h"
 #include "lib.h"
 
 
-/* --- VARIÁVEIS GLOBAIS ---------------------------------*/
+/* --- VARIï¿½VEIS GLOBAIS ---------------------------------*/
 
-static int  end_command;   /* Controla o fim de execução do interpretador de comandos */
-/* Variáveis para leitura da linha de comandos */
+static int  end_command;   /* Controla o fim de execuï¿½ï¿½o do interpretador de comandos */
+/* Variï¿½veis para leitura da linha de comandos */
 static char      cmdline [MAXLINE+1];
 static char      palavra [MAXLINE+1];
 static char      argline [MAXLINE+1+MAXARGS*VAR_VALOR_TAM];
 static char far *argv    [MAXARGS];
-/* Variáveis para controle do histórico */
+/* Variï¿½veis para controle do histï¿½rico */
 static char history [MAXHISTORY][MAXLINE+1];
-static int  history_len;  /* Número de itens no histórico */
-static int  history_ini;  /* Indice do primeiro item do histórico */
-static int  history_nxt;  /* Próximo item do histórico */
-static int  history_pos;  /* Posição para navegação no histórico */
-/* Variáveis para definição de variáveis internas */
-static int num_var = 0;         /* Número de variáveis definidas */
-static variable_t var[VAR_MAX]; /* Conteúdo das variáveis definidas */
+static int  history_len;  /* Nï¿½mero de itens no histï¿½rico */
+static int  history_ini;  /* Indice do primeiro item do histï¿½rico */
+static int  history_nxt;  /* Prï¿½ximo item do histï¿½rico */
+static int  history_pos;  /* Posiï¿½ï¿½o para navegaï¿½ï¿½o no histï¿½rico */
+/* Variï¿½veis para definiï¿½ï¿½o de variï¿½veis internas */
+static int num_var = 0;         /* Nï¿½mero de variï¿½veis definidas */
+static variable_t var[VAR_MAX]; /* Conteï¿½do das variï¿½veis definidas */
 /* Tabela de comandos internos */
 static command_t commands[MAXCOMMANDS] = {
   "?","                   exibe estas informacoes",                       cmd_help,
@@ -67,7 +67,7 @@ static command_t commands[MAXCOMMANDS] = {
 };
 
 
-/* --- FUNÇÕES -------------------------------------------*/
+/* --- FUNï¿½ï¿½ES -------------------------------------------*/
 
 void command()
 {
@@ -77,7 +77,7 @@ void command()
   int novalinha,res,argc;
   char far *ptrline,far *var;
 
-  /* Inicializações... */
+  /* Inicializaï¿½ï¿½es... */
   numcar = 0;
   end_command = 0;
   history_ini = 0;
@@ -87,19 +87,19 @@ void command()
   setcolor(7);
   clrscr();
   setcolor(LOGOCOLOR);
-  putstr("                  ÜÜÜÜÜÜÜ  ÜÜÜÜÜÜ\n");
-  putstr(" ÜÜÜÜÜ  Ü  ÜÜÜ  Ü ÛÛ   ßß  ÛÛ  ÛÛ  "); setcolor(7); putstr("MinisSistema Operacional\n"); setcolor(LOGOCOLOR);
-  putstr("ÜÛ Û Û ÜÛ ÜÛ Û ÜÛ ßßßßÛÛÛ ÛÛÛ  ÛÛ  "); setcolor(7); putstr("Vs "); putstr(miniSO_VERSION); putstr("\n"); setcolor(LOGOCOLOR);
-  putstr("ÛÛ Û Û ÛÛ ÛÛ Û ÛÛ ÛÛÜÜÛÛÛ ÛÛÛÜÜÛÛ  "); setcolor(7); putstr("por Roland Teodorowitsch\n");
+  putstr("                  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+  putstr(" ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½  ï¿½ï¿½ï¿½  ï¿½ ï¿½ï¿½   ï¿½ï¿½  ï¿½ï¿½  ï¿½ï¿½  "); setcolor(7); putstr("MinisSistema Operacional\n"); setcolor(LOGOCOLOR);
+  putstr("ï¿½ï¿½ ï¿½ ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½  ï¿½ï¿½  "); setcolor(7); putstr("Vs "); putstr(miniSO_VERSION); putstr("\n"); setcolor(LOGOCOLOR);
+  putstr("ï¿½ï¿½ ï¿½ ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "); setcolor(7); putstr("por Roland Teodorowitsch\n");
   
   putstr("\nDigite 'help' ou '?' para ajuda...\n\n");
-  /* Inicializa variáveis de ambiente */
+  /* Inicializa variï¿½veis de ambiente */
   command_var_init();
   command_var_set("PROMPT","miniSO>");
   command_var_set("ERRORLEVEL","0");
   /* Imprime sinal de pronto */
   command_showprompt();
-  /* Laço para interpretação de comandos */
+  /* Laï¿½o para interpretaï¿½ï¿½o de comandos */
   while ( !end_command )  {
         car=getch();
         switch (car)  {
@@ -129,7 +129,7 @@ void command()
                                       command_backspace();
                                 }
                                 putch('\n');
-                                /* Imprime o histórico */
+                                /* Imprime o histï¿½rico */
                                 for (i=0;i<history_len;++i)  {
                                     putstr(history[(history_ini+i)%MAXHISTORY]);
                                     putch('\n');
@@ -223,7 +223,7 @@ void command()
                     history_pos = -1;
                     putch('\n');
                     cmdline[numcar]='\0';
-                    /* Divide a linha de comandos em comando e opções */
+                    /* Divide a linha de comandos em comando e opï¿½ï¿½es */
                     ptrline = cmdline;
                     argc = 0;
                     pos = 0;
@@ -255,12 +255,12 @@ void command()
                              break;
                           ++ptrline;
                     }
-                    /* Se é comando vazio não faz nada */
+                    /* Se ï¿½ comando vazio nï¿½o faz nada */
                     if (argc==0)  {
                        command_showprompt();
                        break;
                     }
-                    /* Salva linha de comando no histórico */
+                    /* Salva linha de comando no histï¿½rico */
                     strcpy (history[history_nxt],cmdline);
                     if (history_len<MAXHISTORY)
                        ++history_len;
@@ -274,7 +274,7 @@ void command()
                        history_nxt = 0;
                     else
                        ++history_nxt;
-                    /* Verifica qual é o comando ... */
+                    /* Verifica qual ï¿½ o comando ... */
                     achou = 0;
                     for (i=0;i<MAXCOMMANDS;++i)  {
                         if (strcmp(argv[0],commands[i].name)==0)  {
@@ -718,11 +718,11 @@ void demo()
   char str[20];
   int ec = exitcode;
 
-  putstrxy(65,ini+0,"ÚÄÄ Thread ÄÄÄÄ¿");
-  putstrxy(65,ini+1,"³ PID  =       ³");
-  putstrxy(65,ini+2,"³ Execucao:    ³");
-  putstrxy(65,ini+3,"³              ³");
-  putstrxy(65,ini+4,"ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ");
+  putstrxy(65,ini+0,"ï¿½ï¿½ï¿½ Thread ï¿½ï¿½ï¿½Ä¿");
+  putstrxy(65,ini+1,"ï¿½ PID  =       ï¿½");
+  putstrxy(65,ini+2,"ï¿½ Execucao:    ï¿½");
+  putstrxy(65,ini+3,"ï¿½              ï¿½");
+  putstrxy(65,ini+4,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
   inttostr(str,getpid());
   putstrxy(74,ini+1,str);
@@ -884,11 +884,11 @@ void sem_aplic()
 	int ini = demo_linha;
 	char str[20];
 
-	putstrxy(65,ini+0,"ÚÄÄ Thread ÄÄÄÄ¿");
-	putstrxy(65,ini+1,"³ PID  =       ³");
-	putstrxy(65,ini+2,"³ Execucao:    ³");
-	putstrxy(65,ini+3,"³              ³");
-	putstrxy(65,ini+4,"ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ");
+	putstrxy(65,ini+0,"ï¿½ï¿½ï¿½ Thread ï¿½ï¿½ï¿½Ä¿");
+	putstrxy(65,ini+1,"ï¿½ PID  =       ï¿½");
+	putstrxy(65,ini+2,"ï¿½ Execucao:    ï¿½");
+	putstrxy(65,ini+3,"ï¿½              ï¿½");
+	putstrxy(65,ini+4,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
 	inttostr(str,getpid());
 	putstrxy(74,ini+1,str);
@@ -1044,3 +1044,10 @@ int cmd_add_cliente_barber (int argc, char far *argv[]){
 
 	return 0;
 }
+
+
+
+
+
+
+
